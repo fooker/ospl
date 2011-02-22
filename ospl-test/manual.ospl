@@ -1,0 +1,77 @@
+Slider redSlider
+redSlider.minimum = "0"
+redSlider.maximum = "255"
+redSlider.minorTickSpacing = "8"
+redSlider.majorTickSpacing = "32"
+
+Slider greenSlider
+greenSlider.minimum = "0"
+greenSlider.maximum = "255"
+greenSlider.minorTickSpacing = "8"
+greenSlider.majorTickSpacing = "32"
+
+Slider blueSlider
+blueSlider.minimum = "0"
+blueSlider.maximum = "255"
+blueSlider.minorTickSpacing = "8"
+blueSlider.majorTickSpacing = "32"
+
+Slider rotationSlider
+rotationSlider.minimum = "0"
+rotationSlider.maximum = "359"
+rotationSlider.minorTickSpacing = "10"
+rotationSlider.majorTickSpacing = "90"
+
+Slider valueSlider
+valueSlider.minimum = "0"
+valueSlider.maximum = "255"
+valueSlider.minorTickSpacing = "8"
+valueSlider.majorTickSpacing = "32"
+
+Divide valueDivide
+valueSlider.value -> valueDivide.value1
+valueDivide.value2 = "256"
+
+RGBCompositor rgb
+redSlider.value -> rgb.red
+greenSlider.value -> rgb.green
+blueSlider.value -> rgb.blue
+
+RGB2HSV rgb2hsv
+rgb.rgb -> rgb2hsv.rgb
+
+HSVRotation rotation
+rgb2hsv.hsv -> rotation.input
+rotationSlider.value -> rotation.rotation
+
+HSVDecompositor hsvDecompositor
+rotation.output -> hsvDecompositor.hsv
+
+Multiply valueMultiply
+hsvDecompositor.value -> valueMultiply.value1
+valueDivide.result -> valueMultiply.value2
+
+HSVCompositor hsvCompositor
+hsvDecompositor.hue -> hsvCompositor.hue
+hsvDecompositor.saturation -> hsvCompositor.saturation
+valueMultiply.result -> hsvCompositor.value
+
+HSV2RGB hsv2rgb
+hsvCompositor.hsv -> hsv2rgb.hsv
+
+RGBDecompositor rgbDecompositor
+hsv2rgb.rgb -> rgbDecompositor.rgb
+
+Label redLable
+rgbDecompositor.red -> redLable.value
+
+Label greenLable
+rgbDecompositor.green -> greenLable.value
+
+Label blueLable
+rgbDecompositor.blue -> blueLable.value
+
+Mood mood
+mood.port = "/dev/ttyUSB0"
+mood.id = "0"
+hsv2rgb.rgb -> mood.rgb

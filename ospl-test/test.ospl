@@ -1,0 +1,26 @@
+AudioSource audioSource
+audioSource.sampleRate = "44100"
+
+HSVCompositor hsvCompositor
+hsvCompositor.hue = "0.0"
+hsvCompositor.saturation = "1.0"
+audioSource.amplitude -> hsvCompositor.value
+
+Period period
+period.period = "100"
+
+Increment increment
+increment.step = "1.0"
+period.emit -> increment.emit
+
+HSVRotation rotation
+hsvCompositor.hsv -> rotation.input
+increment.value -> rotation.rotation
+
+HSV2RGB hsv2rgb
+rotation.output -> hsv2rgb.hsv
+
+Mood mood
+mood.port = "/dev/ttyUSB0"
+mood.id = "0"
+hsv2rgb.rgb -> mood.rgb
